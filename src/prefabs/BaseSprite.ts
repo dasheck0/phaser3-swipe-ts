@@ -5,8 +5,8 @@ export default class BaseSprite extends Phaser.Physics.Arcade.Sprite {
     constructor(
         name: string, 
         scene: BaseScene, 
-        private readonly options: any, 
-        private readonly envs: EnvironmentDto) {
+        protected readonly options: any, 
+        protected readonly envs: EnvironmentDto) {
         super(scene, options.position?.x, options.position?.y, options.key);
 
         if(options.position?.relative) {

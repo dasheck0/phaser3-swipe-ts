@@ -17,11 +17,11 @@ export default class BaseText extends Phaser.GameObjects.Text {
         }
 
         if (options.anchor) {
-            this.setOrigin(options.anchor.x, options.anchor.y || options.anchor.x);
+            this.setOrigin(options.anchor.x, options.anchor.y);
         }
 
         if (options.scale) {
-            this.setScale(options.scale.x, options.scale.y || options.scale.x);
+            this.setScale(options.scale.x, options.scale.y);
         }
 
         if (options.angle) {

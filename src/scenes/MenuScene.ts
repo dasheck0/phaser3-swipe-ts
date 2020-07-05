@@ -10,7 +10,10 @@ export default class MenuScene extends BaseScene {
         super.create(data);
 
         this.getPrefab('startButton')?.setCallback(function() {
-            console.log("JHello");
+            this.scene.start('Game', {
+                configFile: `assets/states/game.yml`,
+                envs: this.envs
+            });
         }, this);
 
         this.getPrefab('versionText')?.setText(`v${version}`);

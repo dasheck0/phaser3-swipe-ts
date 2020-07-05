@@ -2,11 +2,12 @@ import 'phaser';
 
 import config from './assets/config/index';
 import MenuScene from './scenes/MenuScene';
+import GameScene from './scenes/GameScene';
 
 const game = new Phaser.Game({
     width: config.width,
     height: config.height,
-    scene: [MenuScene],
+    scene: [MenuScene, GameScene],
     backgroundColor: config.window.backgroundColor,
     physics: {
         default: 'arcade',

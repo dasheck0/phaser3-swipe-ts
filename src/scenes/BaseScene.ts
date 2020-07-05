@@ -62,7 +62,7 @@ export default class BaseScene extends Phaser.Scene {
         this.groups = map(this.config.groups, (name, index) => {
             const groupToAdd = this.add.group();
 
-            groupToAdd.setDepth(index+1);
+            groupToAdd.setDepth(index + 1);
             groupToAdd.runChildUpdate = true;
 
             return {
@@ -106,7 +106,6 @@ export default class BaseScene extends Phaser.Scene {
     }
 
     getGroup(name: string): GroupDto {
-        console.log("groups", this.groups);
         return this.groups.find(group => group.name === name);
     }
 

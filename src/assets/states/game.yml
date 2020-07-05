@@ -1,0 +1,78 @@
+assets:
+  arrow:
+    type: image
+    src: assets/images/arrow.png
+
+groups:
+  - temparrows
+  - arrows
+  - ui
+
+scenes:
+
+prefabs:
+  scoreLabelText:
+    type: BaseText
+    options:
+      group: ui
+      text: Score
+      position:
+        x: 20
+        y: 20
+      anchor:
+        x: 0
+        y: 0
+      fontSize: 48
+      fontFamily: raleway-regular
+      fontColor: "#000"
+
+  timeLabelText:
+    type: BaseText
+    options:
+      group: ui
+      text: Time
+      position:
+        x: 700
+        y: 20
+      anchor:
+        x: 1
+        y: 0
+      fontSize: 48
+      fontFamily: raleway-regular
+      fontColor: "#000"
+
+  scoreText:
+    type: BaseText
+    options:
+      group: ui
+      text: 0
+      position:
+        x: 20
+        y: 75
+      anchor:
+        x: 0
+        y: 0
+      fontSize: 32
+      fontFamily: raleway-regular
+      fontColor: "#000"
+
+  timeText:
+    type: BaseText
+    options:
+      group: ui
+      text: 30s
+      position:
+        x: 700
+        y: 75
+      anchor:
+        x: 1
+        y: 0
+      fontSize: 32
+      fontFamily: raleway-regular
+      fontColor: "#000"
+
+  arrowGrid:
+    type: ArrowGrid
+    options:
+      pool: arrows
+      tempPool: temparrows
