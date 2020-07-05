@@ -1,0 +1,26 @@
+{
+    "name": "phaser3-typescript-project-template",
+    "version": "1.0.2",
+    "description": "A Phaser 3 Project Template using Rollup and TypeScript",
+    "main": "src/index.ts",
+    "scripts": {
+        "dev": "webpack --mode development && webpack-dev-server --mode development",
+        "build:dev": "webpack --mode development"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "lodash": "^4.17.15",
+        "phaser": "^3.22.0",
+        "yamljs": "^0.3.0"
+    },
+    "devDependencies": {
+        "clean-webpack-plugin": "^3.0.0",
+        "copy-webpack-plugin": "^6.0.3",
+        "expose-loader": "^1.0.0",
+        "ts-loader": "^7.0.5",
+        "typescript": "^3.7.4",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.12",
+        "webpack-dev-server": "^3.11.0"
+    }
+}
