@@ -2,8 +2,8 @@ import { EnvironmentDto } from "../dtos/Environment.dto";
 
 export default class BaseObject {
     constructor(
-        private readonly name: string, 
-        private readonly scene: Phaser.Scene,
-        private readonly options: any,
-        private readonly envs: EnvironmentDto) {}
+        protected readonly name: string, 
+        protected readonly scene: Phaser.Scene,
+        protected readonly options: any,
+        protected readonly envs: EnvironmentDto) {}
 }

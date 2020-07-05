@@ -1,0 +1,72 @@
+assets:
+    rexuiplugin:
+        type: "scenePlugin"
+        url: "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js"
+        sceneKey: "ui"
+    game-logo:
+        type: image
+        src: assets/images/logo.png
+    start-button-icon:
+        type: image
+        src: assets/images/start-button.png
+
+groups:
+    - hud
+
+scenes:
+
+prefabs:
+    logo:
+        type: BaseSprite
+        options:
+            group: hud
+            key: game-logo
+            position:
+                x: 0.5
+                y: 0.5
+                relative: true
+
+    startButton:
+        type: ImageButton
+        options:
+            key: start-button-icon
+            anchor:
+                left: center-50
+                top: center+230
+            size:
+                x: 100
+                y: 100
+            animated: true
+
+    startText:
+        type: BaseText
+        options:
+            group: hud
+            text: START
+            position:
+                x: 0.5
+                y: 0.80
+                relative: true
+            anchor:
+                x: 0.5
+                y: 0.5
+            fontSize: 72
+            fontFamily: raleway-regular
+            fontColor: "#000"
+            
+    versionText:
+        type: BaseText
+        options:
+            group: hud
+            text: v0.0.0
+            position:
+                x: 0.5
+                y: 0.99
+                relative: true
+            anchor:
+                x: 0.5
+                y: 1
+            fontSize: 32
+            fontFamily: raleway-regular
+            fontColor: "#000"
+            

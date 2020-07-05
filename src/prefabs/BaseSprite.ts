@@ -36,7 +36,8 @@ export default class BaseSprite extends Phaser.Physics.Arcade.Sprite {
 
         if(options.group) {
             const group = scene.getGroup(options.group);
-            group?.add(this);
+            this.setDepth(group?.depth);
+            group?.group.add(this);
         }
     }
 }

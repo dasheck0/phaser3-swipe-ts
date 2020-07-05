@@ -1,12 +1,12 @@
 import 'phaser';
 
-import TestScene from './scenes/TestScene';
 import config from './assets/config/index';
+import MenuScene from './scenes/MenuScene';
 
 const game = new Phaser.Game({
     width: config.width,
     height: config.height,
-    scene: [TestScene],
+    scene: [MenuScene],
     backgroundColor: config.window.backgroundColor,
     physics: {
         default: 'arcade',
@@ -24,7 +24,7 @@ const game = new Phaser.Game({
     parent: 'phaser-container'
 });
 
-game.scene.start('Test', {
-    configFile: `assets/states/test.yml`,
+game.scene.start('Menu', {
+    configFile: `assets/states/menu.yml`,
     envs: config
 });

@@ -1,6 +1,6 @@
-width: 512
-height: 768
+width: 720
+height: 1280
 debug: true
 window: 
-    backgroundColor: '#ff0000'
+    backgroundColor: '#D0E3C4'
 game:

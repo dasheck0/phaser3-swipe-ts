@@ -59,18 +59,15 @@ export default class BaseScene extends Phaser.Scene {
 
 
         // groups
-        let zIndex = 0;
-
-        this.groups = forEach(this.config.groups, (_, name) => {
+        this.groups = map(this.config.groups, (name, index) => {
             const groupToAdd = this.add.group();
 
-            groupToAdd.setDepth(zIndex);
+            groupToAdd.setDepth(index+1);
             groupToAdd.runChildUpdate = true;
-
-            zIndex += 1;
 
             return {
                 name,
+                depth: index,
                 group: groupToAdd
             };
         });
@@ -84,7 +81,7 @@ export default class BaseScene extends Phaser.Scene {
         });
 
         // scenes
-        this.scenes = map(this.config.scenes, (_, name) => {
+        this.scenes = map(this.config.scenes, (name, index) => {
             const sceneToAdd = this.scene.get(name);
             this.scene.launch(name, {
                 configFile: `assets/states/${name}.yml`,
@@ -108,8 +105,9 @@ export default class BaseScene extends Phaser.Scene {
         });
     }
 
-    getGroup(name: string): Phaser.GameObjects.Group {
-        return this.groups.find(group => group.name === name)?.group;
+    getGroup(name: string): GroupDto {
+        console.log("groups", this.groups);
+        return this.groups.find(group => group.name === name);
     }
 
     getScene(name: string): Phaser.Scene {
