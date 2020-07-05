@@ -23,14 +23,16 @@ export class ArrowGrid extends BaseObject {
     constructor(name: string, scene: BaseScene, options: any, envs: EnvironmentDto) {
         super(name, scene, options, envs);
 
-        this.columnCount = options.columnCount || 2;
-        this.rowCount = options.rowCount || 2;
+        this.initialize();
+    }
+
+    initialize() {
+        this.columnCount = this.options.columnCount || 2;
+        this.rowCount = this.options.rowCount || 2;
         this.currentLevel = 1;
     }
 
     createArrowGrid() {
-        console.log("new size", this.columnCount, this.rowCount);
-
         const size = 40;
         const spacing = 10;
 
@@ -80,9 +82,11 @@ export class ArrowGrid extends BaseObject {
     guessDirection(direction: ArrowDirection) {
         if (this.currentDirection !== direction) {
             this.scene.cameras.main.shake(250, 0.01, true);
-        } else {
-            this.killCurrentGrid(direction);
+            return false;
         }
+
+        this.killCurrentGrid(direction);
+        return true;
     }
 
     killCurrentGrid(intoDirection: ArrowDirection) {
@@ -128,7 +132,7 @@ export class ArrowGrid extends BaseObject {
             },
             onCompleteScope: this
         });
-        
+
         this.currentLevel += 1;
         const size = Math.min(10, Math.floor(Math.sqrt(this.currentLevel) + 2));
 
@@ -149,6 +153,6 @@ export class ArrowGrid extends BaseObject {
                 colors: ['#C05746', '#503047'],
                 colorKey: index % 2
             }, this.envs);
-        })
+        });
     }
 }

@@ -2,6 +2,13 @@ assets:
   arrow:
     type: image
     src: assets/images/arrow.png
+  rexuiplugin:
+    type: scenePlugin
+    url: https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js
+    sceneKey: ui
+  start-button-icon:
+    type: image
+    src: assets/images/start-button.png
 
 groups:
   - temparrows
@@ -9,6 +16,7 @@ groups:
   - ui
 
 scenes:
+  - gameUi
 
 prefabs:
   scoreLabelText:
@@ -76,3 +84,7 @@ prefabs:
     options:
       pool: arrows
       tempPool: temparrows
+
+  gameOverDialog:
+    type: GameOverDialog
+    options:

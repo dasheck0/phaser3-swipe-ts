@@ -3,14 +3,14 @@ const { version } = require('../../package.json');
 
 export default class MenuScene extends BaseScene {
     constructor() {
-        super('Menu');
+        super('menu');
     }
 
     create(data) {
         super.create(data);
 
         this.getPrefab('startButton')?.setCallback(function() {
-            this.scene.start('Game', {
+            this.scene.start('game', {
                 configFile: `assets/states/game.yml`,
                 envs: this.envs
             });

@@ -1,0 +1,18 @@
+assets:
+  rexuiplugin:
+    type: scenePlugin
+    url: https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js
+    sceneKey: ui
+  start-button-icon:
+    type: image
+    src: assets/images/start-button.png
+
+groups:
+  - ui
+
+scenes:
+
+prefabs:
+  gameOverDialog:
+    type: GameOverDialog
+    options:

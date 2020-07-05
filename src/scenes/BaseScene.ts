@@ -11,8 +11,8 @@ import { PrefabDto } from './dtos/Prefab.dto';
 import { Store } from '../prefabs/index';
 
 export default class BaseScene extends Phaser.Scene {
-    private envs: EnvironmentDto;
-    private config: GameStateConfigDto;
+    protected envs: EnvironmentDto;
+    protected config: GameStateConfigDto;
     private groups: GroupDto[];
     private scenes: SceneDto[];
     private prefabs: PrefabDto[];
@@ -37,13 +37,11 @@ export default class BaseScene extends Phaser.Scene {
             }
 
             if (asset.type === AssetDtoType.SCENE_PLUGIN) {
-                if (!this.plugins.scenePlugins.includes(name)) {
-                    this.load.scenePlugin({
-                        key: name,
-                        url: asset.url,
-                        sceneKey: asset.sceneKey
-                    });
-                }
+                this.load.scenePlugin({
+                    key: name,
+                    url: asset.url,
+                    sceneKey: asset.sceneKey
+                });
             }
 
             if (asset.type === AssetDtoType.PLUGIN) {
@@ -55,7 +53,7 @@ export default class BaseScene extends Phaser.Scene {
     }
 
     create(data) {
-        console.log("da", data);
+        console.log("da", this);
 
 
         // groups
@@ -81,17 +79,11 @@ export default class BaseScene extends Phaser.Scene {
         });
 
         // scenes
-        this.scenes = map(this.config.scenes, (name, index) => {
-            const sceneToAdd = this.scene.get(name);
+        forEach(this.config.scenes, (name, index) => {
             this.scene.launch(name, {
                 configFile: `assets/states/${name}.yml`,
                 envs: this.envs
             });
-
-            return {
-                name,
-                scene: sceneToAdd
-            }
         });
 
         this.postCreate();
@@ -109,11 +101,11 @@ export default class BaseScene extends Phaser.Scene {
         return this.groups.find(group => group.name === name);
     }
 
-    getScene(name: string): Phaser.Scene {
-        return this.scenes.find(scene => scene.name === name)?.scene;
+    getScene(name: string): BaseScene {
+        return this.scene.get(name) as BaseScene;
     }
 
     getPrefab(name: string): any {
-        return this.prefabs.find(prefab => prefab.name === name)?.prefab;
+        return this.prefabs?.find(prefab => prefab.name === name)?.prefab;
     }
 }

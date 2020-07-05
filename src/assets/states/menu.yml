@@ -53,7 +53,7 @@ prefabs:
             fontSize: 72
             fontFamily: raleway-regular
             fontColor: "#000"
-            
+
     versionText:
         type: BaseText
         options:
@@ -69,4 +69,3 @@ prefabs:
             fontSize: 32
             fontFamily: raleway-regular
             fontColor: "#000"
-            
