@@ -5,6 +5,7 @@ import ImageButton from './ui/ImageButton';
 import GameOverDialog from './ui/GameOverDialog';
 import Arrow from './game/Arrow';
 import { ArrowGrid} from './game/ArrowGrid'
+import GameScoreManager from './game/GameScoreManager';
 
 export const Store: any = {
     BaseObject,
@@ -13,5 +14,6 @@ export const Store: any = {
     ImageButton,
     GameOverDialog,
     Arrow,
-    ArrowGrid
+    ArrowGrid,
+    GameScoreManager
 }

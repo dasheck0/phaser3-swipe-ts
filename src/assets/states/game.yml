@@ -88,3 +88,7 @@ prefabs:
   gameOverDialog:
     type: GameOverDialog
     options:
+
+  gameScoreManager:
+    type: GameScoreManager
+    options:

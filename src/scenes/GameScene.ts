@@ -8,7 +8,9 @@ export default class GameScene extends BaseScene {
     private leftKey: Phaser.Input.Keyboard.Key;
 
     private currentTime: number;
+    private triesUntilCorrect: number;
     private timer: Phaser.Time.TimerEvent;
+    private swipeTimer: Phaser.Time.TimerEvent;
 
     private overlay: Phaser.GameObjects.Graphics;
 
@@ -46,6 +48,17 @@ export default class GameScene extends BaseScene {
         this.restartGame();
     }
 
+    startSwipeTimer() {
+        if (this.swipeTimer) {
+            this.swipeTimer.reset({
+                startAt: 0,
+                delay: this.currentTime * 1000
+            });
+        } else {
+            this.swipeTimer = this.time.delayedCall(this.currentTime * 1000, () => { });
+        }
+    }
+
     update() {
         let result = null;
 
@@ -61,8 +74,16 @@ export default class GameScene extends BaseScene {
 
         if (result) {
             this.addToTimer(1);
+            const elapsed = this.swipeTimer.elapsed;
+            console.log("Elapsed", elapsed);
+
+            this.getPrefab('gameScoreManager')?.addGameSnapshot({ triesBeforeCorrect: this.triesUntilCorrect, elapsedInMillies: elapsed});
+            
+            this.startSwipeTimer();
+            this.triesUntilCorrect = 0;
         } if (result === false) {
             this.addToTimer(-2);
+            this.triesUntilCorrect += 1;
         }
 
     }
@@ -70,6 +91,7 @@ export default class GameScene extends BaseScene {
     private addToTimer(newTime: number) {
         this.currentTime = Math.max(this.currentTime + newTime, 0);
         this.getPrefab('timeText')?.setText(`${this.currentTime}s`);
+        this.getPrefab('scoreText')?.setText(Math.ceil(this.getPrefab('gameScoreManager')?.getCurrentGameScore().score));
 
         if (this.currentTime <= 0) {
             this.showLoosingDialog();
@@ -82,12 +104,15 @@ export default class GameScene extends BaseScene {
         this.overlay.clear();
         this.overlay.fillRect(0, 0, this.envs.width, this.envs.height);
 
+        this.getPrefab('gameScoreManager')?.finishGame();
+        this.getScene('gameUi')?.getPrefab('gameOverDialog')?.setScore(Math.ceil(this.getPrefab('gameScoreManager')?.getCurrentGameScore().score));
         this.getScene('gameUi')?.getPrefab('gameOverDialog')?.showDialog();
 
         this.scene.pause();
     }
 
     restartGame() {
+
         this.lost = false;
         this.scene.resume();
 
@@ -95,7 +120,11 @@ export default class GameScene extends BaseScene {
         this.overlay.clear();
 
         this.currentTime = 30;
+        this.triesUntilCorrect = 0;
         this.getPrefab('arrowGrid')?.initialize();
         this.getPrefab('arrowGrid')?.createArrowGrid();
+        this.getPrefab('gameScoreManager')?.startNewGame();
+
+        this.startSwipeTimer();
     }
 }
