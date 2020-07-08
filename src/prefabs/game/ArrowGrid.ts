@@ -15,7 +15,7 @@ export enum ArrowDirection {
 export class ArrowGrid extends BaseObject {
     private columnCount: number;
     private rowCount: number;
-    private currentDirection: ArrowDirection;
+    private currentSpecialDirection: ArrowDirection;
     private arrows: Arrow[];
     private tempArrows: Arrow[];
     private currentLevel: number;
@@ -44,7 +44,7 @@ export class ArrowGrid extends BaseObject {
 
         const specialIndex = Phaser.Math.Between(0, (this.rowCount - 1) * this.columnCount + this.columnCount - 1);
         const orientation = Phaser.Math.Between(0, 3);
-        this.currentDirection = (orientation + 2) % 4;
+        this.currentSpecialDirection = (orientation + Phaser.Math.Between(1, 3)) % 4;
 
         if (this.arrows?.length > 0) {
             this.arrows.map((arrow) => {
@@ -56,23 +56,24 @@ export class ArrowGrid extends BaseObject {
 
         this.backgroundRectangle.clear();
         this.backgroundRectangle.fillStyle(Phaser.Display.Color.HexStringToColor(colorConfiguration.backgroundColor).color, 1);
-        this.backgroundRectangle.fillRect(0,0,this.envs.width, this.envs.height);
+        this.backgroundRectangle.fillRect(0, 0, this.envs.width, this.envs.height);
 
         this.arrows = flatten(times(this.rowCount, (rowIndex) => {
             return times(this.columnCount, (columnIndex) => {
                 const x = (this.envs.width - fullWidth + size) / 2 + columnIndex * (size + spacing);
                 const y = (this.envs.height - fullHeight + size) / 2 + rowIndex * (size + spacing);
                 const index = (rowIndex * this.columnCount + columnIndex);
-                const offset = rowIndex % 2 * (this.columnCount+1) % 2;
+                const offset = rowIndex % 2 * (this.columnCount + 1) % 2;
 
                 return new Arrow(`arrow_${columnIndex}${rowIndex}`, this.scene, {
                     position: { x, y },
                     key: 'arrow',
                     group: this.options.pool,
                     anchor: { x: 0.5, y: 0.5 },
-                    orientation: index === specialIndex ? orientation + 2 : orientation,
+                    orientation: index === specialIndex ? this.currentSpecialDirection % 4 : orientation,
                     colors: [colorConfiguration.arrowColor1, colorConfiguration.arrowColor2],
-                    colorKey: (index + offset) % 2
+                    colorKey: (index + offset) % 2,
+                    currentLevel: this.currentLevel
                 }, this.envs)
             });
         }));
@@ -90,7 +91,7 @@ export class ArrowGrid extends BaseObject {
     }
 
     guessDirection(direction: ArrowDirection) {
-        if (this.currentDirection !== direction) {
+        if (this.currentSpecialDirection !== direction) {
             this.scene.cameras.main.shake(250, 0.01, true);
             return false;
         }
@@ -161,7 +162,8 @@ export class ArrowGrid extends BaseObject {
                 anchor: { x: 0.5, y: 0.5 },
                 orientation: arrow.getOrientation(),
                 colors: ['#C05746', '#503047'],
-                colorKey: index % 2
+                colorKey: index % 2,
+                skipEffects: true,
             }, this.envs);
         });
     }
