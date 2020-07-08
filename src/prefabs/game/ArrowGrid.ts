@@ -58,6 +58,8 @@ export class ArrowGrid extends BaseObject {
         this.backgroundRectangle.fillStyle(Phaser.Display.Color.HexStringToColor(colorConfiguration.backgroundColor).color, 1);
         this.backgroundRectangle.fillRect(0, 0, this.envs.width, this.envs.height);
 
+        this.scene.getScene('gameUi')?.getPrefab('gameOverDialog')?.setColor(colorConfiguration.backgroundColor);
+
         this.arrows = flatten(times(this.rowCount, (rowIndex) => {
             return times(this.columnCount, (columnIndex) => {
                 const x = (this.envs.width - fullWidth + size) / 2 + columnIndex * (size + spacing);

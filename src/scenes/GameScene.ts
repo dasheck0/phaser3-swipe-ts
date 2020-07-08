@@ -38,6 +38,7 @@ export default class GameScene extends BaseScene {
         });
 
         this.overlay = this.add.graphics({ x: 0, y: 0 });
+        this.overlay.setDepth(9);
         this.overlay.setDefaultStyles({
             fillStyle: {
                 color: 0x000000,
@@ -102,6 +103,7 @@ export default class GameScene extends BaseScene {
         this.lost = true;
 
         this.overlay.clear();
+        this.overlay.alpha = 1;
         this.overlay.fillRect(0, 0, this.envs.width, this.envs.height);
 
         this.getPrefab('gameScoreManager')?.finishGame();
@@ -112,12 +114,23 @@ export default class GameScene extends BaseScene {
     }
 
     restartGame() {
-
         this.lost = false;
         this.scene.resume();
 
         this.getScene('gameUi')?.getPrefab('gameOverDialog')?.hideDialog();
-        this.overlay.clear();
+        
+        this.tweens.add({
+            targets: this.overlay,
+            alpha: { from: 1, to: 0 },
+            ease: 'Quintic.easeInOut',
+            yoyo: false,
+            repeat: 0,
+            onComplete: function () {
+                this.overlay.clear();
+                this.overlay.alpha = 1;
+            },
+            onCompleteScope: this
+        });
 
         this.currentTime = 30;
         this.triesUntilCorrect = 0;

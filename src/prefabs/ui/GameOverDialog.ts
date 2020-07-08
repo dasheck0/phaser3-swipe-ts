@@ -7,7 +7,7 @@ export default class GameOverDialog extends BaseObject {
     private captionText: BaseText;
     private scoreText: BaseText;
     private scoreLabelText: BaseText;
-    private background: Phaser.GameObjects.Graphics;
+    private background: any;
     private icon: Phaser.GameObjects.Sprite;
     private button: any;
     private callback: any;
@@ -106,6 +106,11 @@ export default class GameOverDialog extends BaseObject {
 
     setScore(score: number) {
         this.scoreText.setText(String(score));
+    }
+
+    setColor(color: string) {
+        console.log("fdhjkfh", this.background);
+        this.background.fillColor = Phaser.Display.Color.HexStringToColor(color).color;
     }
 
     setCallback(callback, callbackScope) {
