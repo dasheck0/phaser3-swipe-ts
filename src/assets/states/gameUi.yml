@@ -6,6 +6,12 @@ assets:
   start-button-icon:
     type: image
     src: assets/images/start-button.png
+  back-button-icon:
+    type: image
+    src: assets/images/back-button.png
+  reload-button-icon:
+    type: image
+    src: assets/images/reload-button.png
 
 groups:
   - ui

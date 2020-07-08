@@ -89,6 +89,9 @@ export default class BaseScene extends Phaser.Scene {
         this.postCreate();
     }
 
+    shutdown() {
+    }
+
     private postCreate() {
         map(this.prefabs, (prefab: PrefabDto) => {
             if (prefab.prefab.create) {

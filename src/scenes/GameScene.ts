@@ -49,7 +49,19 @@ export default class GameScene extends BaseScene {
         this.restartGame();
     }
 
+    shutdown() {
+        super.shutdown();
+
+        this.swipeTimer?.destroy();
+        this.swipeTimer = null;
+
+        this.timer?.destroy();
+        this.timer = null;
+    }
+
     startSwipeTimer() {
+        console.log("Swipteim", this.swipeTimer);
+
         if (this.swipeTimer) {
             this.swipeTimer.reset({
                 startAt: 0,
@@ -78,8 +90,8 @@ export default class GameScene extends BaseScene {
             const elapsed = this.swipeTimer.elapsed;
             console.log("Elapsed", elapsed);
 
-            this.getPrefab('gameScoreManager')?.addGameSnapshot({ triesBeforeCorrect: this.triesUntilCorrect, elapsedInMillies: elapsed});
-            
+            this.getPrefab('gameScoreManager')?.addGameSnapshot({ triesBeforeCorrect: this.triesUntilCorrect, elapsedInMillies: elapsed });
+
             this.startSwipeTimer();
             this.triesUntilCorrect = 0;
         } if (result === false) {
@@ -100,17 +112,19 @@ export default class GameScene extends BaseScene {
     }
 
     private showLoosingDialog() {
-        this.lost = true;
+        if (!this.lost) {
+            this.lost = true;
 
-        this.overlay.clear();
-        this.overlay.alpha = 1;
-        this.overlay.fillRect(0, 0, this.envs.width, this.envs.height);
+            this.overlay.clear();
+            this.overlay.alpha = 1;
+            this.overlay.fillRect(0, 0, this.envs.width, this.envs.height);
 
-        this.getPrefab('gameScoreManager')?.finishGame();
-        this.getScene('gameUi')?.getPrefab('gameOverDialog')?.setScore(Math.ceil(this.getPrefab('gameScoreManager')?.getCurrentGameScore().score));
-        this.getScene('gameUi')?.getPrefab('gameOverDialog')?.showDialog();
+            this.getPrefab('gameScoreManager')?.finishGame();
+            this.getScene('gameUi')?.getPrefab('gameOverDialog')?.setScore(Math.ceil(this.getPrefab('gameScoreManager')?.getCurrentGameScore().score));
+            this.getScene('gameUi')?.getPrefab('gameOverDialog')?.showDialog();
 
-        this.scene.pause();
+            this.scene.pause();
+        }
     }
 
     restartGame() {
@@ -118,7 +132,7 @@ export default class GameScene extends BaseScene {
         this.scene.resume();
 
         this.getScene('gameUi')?.getPrefab('gameOverDialog')?.hideDialog();
-        
+
         this.tweens.add({
             targets: this.overlay,
             alpha: { from: 1, to: 0 },

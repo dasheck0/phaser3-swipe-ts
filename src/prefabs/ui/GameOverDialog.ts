@@ -8,9 +8,9 @@ export default class GameOverDialog extends BaseObject {
     private scoreText: BaseText;
     private scoreLabelText: BaseText;
     private background: any;
-    private icon: Phaser.GameObjects.Sprite;
+    private buttonIcons: Phaser.GameObjects.Sprite[];
     private button: any;
-    private callback: any;
+    private callbacks: Function[];
     private callbackScope: any;
     private sizer: any;
 
@@ -49,33 +49,34 @@ export default class GameOverDialog extends BaseObject {
             fontColor: 0x503047
         }, this.envs);
 
-        this.icon = this.scene.add.sprite(0, 0, 'start-button-icon');
+        this.buttonIcons = ['back-button-icon', 'start-button-icon', 'reload-button-icon'].map(iconName => this.scene.add.sprite(0, 0, iconName));
 
         this.button = this.scene['ui'].add.buttons({
             anchor: { centerX: 'center', centerY: 'center' },
-            orientation: 'y',
-            buttons: [
+            orientation: 'x',
+            space: 50,
+            buttons: this.buttonIcons.map(buttonIcon => (
                 this.scene['ui'].add.label({
                     width: 100,
                     height: 100,
-                    icon: this.icon,
+                    icon: buttonIcon,
                     iconMask: false
                 })
-            ]
+            ))
         });
 
         this.button.on('button.click', function (button, index, pointer, event) {
             this.scene.tweens.add({
-                targets: this.icon,
-                scale: this.icon.scale * 0.9,
+                targets: this.buttonIcons[index],
+                scale: this.buttonIcons[index].scale * 0.9,
                 duration: 50,
                 repeat: 0,
                 yoyo: true,
                 ease: 'Cubic'
             });
 
-            if (this.callback) {
-                this.callback.call(this.callbackScope || this, button, index, pointer, event);
+            if (this.callbacks && this.callbacks[index]) {
+                this.callbacks[index].call(this.callbackScope || this, button, index, pointer, event);
             }
         }, this);
 
@@ -115,11 +116,14 @@ export default class GameOverDialog extends BaseObject {
         const darkerColor = colorObject.darken(8);
 
         this.background.fillColor = colorObject.color;
-        this.icon.setTint(darkerColor.color);
+
+        this.buttonIcons.forEach((buttonIcon) => {
+            buttonIcon.setTint(darkerColor.color);
+        });
     }
 
-    setCallback(callback, callbackScope) {
-        this.callback = callback;
+    setCallbacks(callbacks, callbackScope) {
+        this.callbacks = callbacks;
         this.callbackScope = callbackScope;
     }
 
