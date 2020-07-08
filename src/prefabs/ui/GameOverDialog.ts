@@ -106,11 +106,16 @@ export default class GameOverDialog extends BaseObject {
 
     setScore(score: number) {
         this.scoreText.setText(String(score));
+        this.sizer.layout();
     }
 
     setColor(color: string) {
         console.log("fdhjkfh", this.background);
-        this.background.fillColor = Phaser.Display.Color.HexStringToColor(color).color;
+        const colorObject = Phaser.Display.Color.HexStringToColor(color);
+        const darkerColor = colorObject.darken(8);
+
+        this.background.fillColor = colorObject.color;
+        this.icon.setTint(darkerColor.color);
     }
 
     setCallback(callback, callbackScope) {
