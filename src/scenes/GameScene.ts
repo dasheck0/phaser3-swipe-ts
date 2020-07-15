@@ -1,5 +1,7 @@
 import BaseScene from "./BaseScene";
-import { ArrowDirection } from '../prefabs/game/ArrowGrid'
+import { ArrowDirection } from '../prefabs/game/ArrowGrid';
+import { sample } from 'lodash';
+import BaseText from "../prefabs/BaseText";
 
 export default class GameScene extends BaseScene {
     private upKey: Phaser.Input.Keyboard.Key;
@@ -85,16 +87,19 @@ export default class GameScene extends BaseScene {
             result = this.getPrefab('arrowGrid')?.guessDirection(ArrowDirection.left);
         }
 
-        if (result) {
+        if (result?.wasCorrect) {
             this.addToTimer(1);
             const elapsed = this.swipeTimer.elapsed;
-            console.log("Elapsed", elapsed);
+            
+            if (elapsed <= 500) {
+                this.showCompliment();
+            }
 
             this.getPrefab('gameScoreManager')?.addGameSnapshot({ triesBeforeCorrect: this.triesUntilCorrect, elapsedInMillies: elapsed });
 
             this.startSwipeTimer();
             this.triesUntilCorrect = 0;
-        } if (result === false) {
+        } if (result?.wasCorrect === false) {
             this.addToTimer(-2);
             this.triesUntilCorrect += 1;
         }
@@ -125,6 +130,41 @@ export default class GameScene extends BaseScene {
 
             this.scene.pause();
         }
+    }
+
+    private showCompliment() {
+        const compliments = ["AWESOME", "NICE", "OMG", "GREAT", "YOU ARE THE MAN", "SODALICOUS", "GOOD", "NEAT", "UBER", "ON FIRE", "COOL", "HOT"];
+        const compliment = sample(compliments);
+
+        const complimentText = new BaseText('compliment', this, {
+            text: compliment,
+            position: {
+                x: Phaser.Math.FloatBetween(0.45, 0.55),
+                y: Phaser.Math.FloatBetween(0.35,0.45),
+                relative: true
+            },
+            anchor: {
+                x: 0.5,
+                y: 0.5
+            },
+            fontSize: 48,
+            fontFamily: 'raleway-regular',
+            fontColor: "#000"
+        }, this.envs);
+
+        this.tweens.add({
+            targets: complimentText,
+            alpha: { from: 1, to: 0 },
+            y: `-=${Phaser.Math.Between(175,225)}`,
+            duration: 500,
+            ease: 'Quintic.easeInOut',
+            yoyo: false,
+            repeat: 0,
+            onComplete: function () {
+                complimentText.destroy();
+            },
+            onCompleteScope: this
+        });
     }
 
     restartGame() {

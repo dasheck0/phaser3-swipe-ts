@@ -95,11 +95,11 @@ export class ArrowGrid extends BaseObject {
     guessDirection(direction: ArrowDirection) {
         if (this.currentSpecialDirection !== direction) {
             this.scene.cameras.main.shake(250, 0.01, true);
-            return false;
+            return { wasCorrect: false };
         }
 
         this.killCurrentGrid(direction);
-        return true;
+        return { wasCorrect: true, showCompliment: true };
     }
 
     killCurrentGrid(intoDirection: ArrowDirection) {
